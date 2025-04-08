@@ -138,31 +138,44 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
-  const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const isMobile = useIsMobile();
+  const [timeRange, setTimeRange] = React.useState("90d");
 
   React.useEffect(() => {
     if (isMobile) {
-      setTimeRange("7d")
+      setTimeRange("7d");
     }
-  }, [isMobile])
+  }, [isMobile]);
 
   const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
-    let daysToSubtract = 90
+    const date = new Date(item.date);
+    const referenceDate = new Date("2024-06-30");
+    let daysToSubtract = 90;
     if (timeRange === "30d") {
-      daysToSubtract = 30
+      daysToSubtract = 30;
     } else if (timeRange === "7d") {
-      daysToSubtract = 7
+      daysToSubtract = 7;
     }
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-    return date >= startDate
-  })
+    const startDate = new Date(referenceDate);
+    startDate.setDate(startDate.getDate() - daysToSubtract);
+    return date >= startDate;
+  });
+
+  // Conditionally apply classes and styles:
+  const cardClasses = isMobile
+    ? "flex flex-col" // use original Card layout on mobile
+    : "h-full flex flex-col overflow-hidden"; // constrain layout on PC
+
+  const cardContentClasses = isMobile
+    ? "flex flex-col flex-1 px-2 pt-4 sm:px-6 sm:pt-6" // original mobile styling (allows scrolling)
+    : "flex flex-col flex-1 overflow-hidden px-2 pt-4 sm:px-6 sm:pt-6"; // constrained version on PC
+
+  const chartContainerProps = isMobile
+    ? { className: "flex-1 w-full" } // original mobile version
+    : { className: "flex-1 w-full", style: { height: "100%" } }; // fixed height for PC
 
   return (
-    <Card className="@container/card h-full flex flex-col">
+    <Card className={cardClasses}>
       <CardHeader>
         <CardTitle>Portfolio History</CardTitle>
         <CardDescription>
@@ -205,12 +218,8 @@ export function ChartAreaInteractive() {
           </Select>
         </CardAction>
       </CardHeader>
-      <CardContent className="flex flex-col flex-1 px-2 pt-4 sm:px-6 sm:pt-6">
-        {/* Remove fixed height and use flex-grow */}
-        <ChartContainer
-          config={chartConfig}
-          className="flex-1 w-full"
-        >
+      <CardContent className={cardContentClasses}>
+        <ChartContainer config={chartConfig} {...chartContainerProps}>
           <AreaChart data={filteredData} className="h-full">
             <defs>
               <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
@@ -246,11 +255,11 @@ export function ChartAreaInteractive() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
+                const date = new Date(value);
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                })
+                });
               }}
             />
             <ChartTooltip
@@ -258,12 +267,12 @@ export function ChartAreaInteractive() {
               defaultIndex={isMobile ? -1 : 10}
               content={
                 <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
+                  labelFormatter={(value) =>
+                    new Date(value).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                     })
-                  }}
+                  }
                   indicator="dot"
                 />
               }
@@ -286,5 +295,5 @@ export function ChartAreaInteractive() {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }
