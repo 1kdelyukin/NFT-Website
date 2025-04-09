@@ -10,6 +10,7 @@ import {
   IconBooks,
   IconMoneybag
 } from "@tabler/icons-react"
+import { useNavigate } from "react-router-dom";
 
 import { NavDocuments } from "@/components/nav-platforms"
 import { NavMain } from "@/components/nav-main"
@@ -35,34 +36,34 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconHome,
     },
     {
       title: "Active Bids",
-      url: "#",
+      url: "/bids",
       icon: IconGavel,
     },
     {
       title: "Marketplace",
-      url: "#",
+      url: "/marketplace",
       icon: IconBuildingStore,
     },
     {
       title: "My Collection",
-      url: "#",
+      url: "/collection",
       icon: IconBooks,
     },
     {
       title: "Sell",
-      url: "#",
+      url: "/sell",
       icon: IconMoneybag,
     },
   ],
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: IconSettings,
     },
     {
@@ -97,6 +98,8 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const navigate = useNavigate();
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -108,20 +111,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="#">
                 <IconCoinBitcoinFilled className="!size-5" />
-                <span className="text-base font-semibold">Company name Inc.</span>
+                <span className="text-base font-semibold">Company Name Inc.</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={data.navMain.map((item) => ({
+            ...item,
+            onClick: () => navigate(item.url),
+          }))}
+        />
         <NavDocuments items={data.platforms} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavSecondary
+          items={data.navSecondary.map((item) => ({
+            ...item,
+            onClick: () => navigate(item.url),
+          }))}
+          className="mt-auto"
+        />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

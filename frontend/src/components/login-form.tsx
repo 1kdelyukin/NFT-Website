@@ -74,13 +74,13 @@ export function LoginForm({
                   </div>
                   <Input id="password" type="password" required />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" onClick={() => window.location.href = '/dashboard'}>
                   Login
                 </Button>
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <a href="/register" className="underline underline-offset-4">
                   Sign up
                 </a>
               </div>
