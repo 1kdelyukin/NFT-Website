@@ -54,11 +54,6 @@ const data = {
       url: "/collection",
       icon: IconBooks,
     },
-    {
-      title: "Sell",
-      url: "/sell",
-      icon: IconMoneybag,
-    },
   ],
   navSecondary: [
     {

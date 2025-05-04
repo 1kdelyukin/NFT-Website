@@ -80,13 +80,13 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => window.location.href = '/profile'}>
                 <IconUserCircle />
                 Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => window.location.href = '/'}>
               <IconLogout />
               Log out
             </DropdownMenuItem>

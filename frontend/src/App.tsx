@@ -4,6 +4,8 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Marketplace from "./pages/Marketplace";
+import ActiveBids from "./pages/ActiveBids";
+import Collection from "./pages/Collection";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/bids" element={<ActiveBids />} />
+        <Route path="/collection" element={<Collection />} />
       </Routes>
     </Router>
   );

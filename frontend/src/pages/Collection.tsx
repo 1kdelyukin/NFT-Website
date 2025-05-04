@@ -11,14 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { IconSearch, IconChevronDown } from "@tabler/icons-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 
 const NFTCards = [
@@ -40,46 +33,10 @@ const NFTCards = [
   { "NFT name": "EtherElf #033", "NFT picture path": "/src/assets/nftImage.jpg", Price: "$3.7" },
 ];
 
-export default function Marketplace() {
-  const isMobile = useIsMobile();
-  const [showAll, setShowAll] = useState(false);
+export default function Collection() {
   const [query, setQuery] = useState("");
-
-  // filter NFTs by search query
   const filteredNFTs = NFTCards.filter((nft) =>
     nft["NFT name"].toLowerCase().includes(query.toLowerCase())
-  );
-
-  if (isMobile) {
-    return (
-      <SidebarProvider>
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
-        </SidebarInset>
-      </SidebarProvider>
-    );
-  }
-
-  const renderNFTCard = (nft: any, index: number) => (
-    <Card key={index} className="w-full">
-      <CardHeader>
-        <CardTitle className="text-base md:text-xl font-extrabold">
-          {nft["NFT name"]}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <img
-          src={nft["NFT picture path"]}
-          alt={nft["NFT name"]}
-          className="w-full h-auto rounded-md"
-        />
-      </CardContent>
-      <CardFooter className="flex justify-between items-center">
-        <span className="text-sm md:text-lg font-semibold">{nft["Price"]}</span>
-        <Button className="btn btn-primary text-sm md:text-base">Buy</Button>
-      </CardFooter>
-    </Card>
   );
 
   return (
@@ -92,9 +49,10 @@ export default function Marketplace() {
             className="flex flex-1 flex-col overflow-y-auto pb-6"
             style={{ minHeight: 0, paddingBottom: "2rem" }}
           >
-            <div className="@container/main flex flex-1 flex-col gap-6 overflow-hidden p-2">
+            {/* Header & Search */}
+            <div className="@container/main flex flex-col gap-6 p-2">
               <h1 className="text-3xl md:text-5xl font-normal mb-1 text-center mt-5">
-                Discover Unique NFTs from Top Creators
+                My collection 
               </h1>
               <div className="flex justify-center items-center w-full mb-2">
                 <div className="relative w-3/4 max-w-xl my-2 group">
@@ -112,58 +70,36 @@ export default function Marketplace() {
                   />
                 </div>
               </div>
+            </div>
 
-              {/* show message if no results */}
-              {filteredNFTs.length === 0 ? (
-                <p className="text-center w-full text-gray-500">No NFTs found.</p>
-              ) : !showAll ? (
-                // Carousel view
-                <div className="border-t border-gray-200 rounded-3xl md:mx-20 py-7 shadow-[0_0_15px_rgba(0,0,0,0.1)]">
-                  <div className="w-full px-1 md:px-8">
-                    <Carousel opts={{ align: "start" }} className="w-full mx-auto">
-                      <CarouselContent className="flex flex-nowrap">
-                        {filteredNFTs.map((nft, index) => (
-                          <CarouselItem
-                            key={index}
-                            className="p-5 w-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                          >
-                            {renderNFTCard(nft, index)}
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                      <CarouselPrevious />
-                      <CarouselNext />
-                    </Carousel>
-                  </div>
-                  <div className="flex justify-center mt-4">
-                    <Button
-                      className="btn btn-secondary text-sm md:text-base px-3 py-1 md:px-4 md:py-2 flex items-center gap-2 animate-pulse"
-                      onClick={() => setShowAll(true)}
-                    >
-                      Browse All
-                      <IconChevronDown size={20} />
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                // Grid view
-                <div className="mx-5 md:mx-20 shadow-[0_0_15px_rgba(0,0,0,0.1)] rounded-3xl p-7">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {filteredNFTs.map((nft, index) => (
-                      <div key={index} className="p-2">
-                        {renderNFTCard(nft, index)}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-center mt-4">
-                    <Button
-                      className="btn btn-secondary text-sm md:text-base px-3 py-1 md:px-4 md:py-2"
-                      onClick={() => setShowAll(false)}
-                    >
-                      Show Less
-                    </Button>
-                  </div>
-                </div>
+            {/* NFT Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
+              {filteredNFTs.map((nft, index) => (
+                <Card key={index} className="bg-white rounded-2xl shadow-lg">
+                  <CardContent className="flex items-center space-x-4 p-4">
+                    <img
+                      src={nft["NFT picture path"]}
+                      alt={nft["NFT name"]}
+                      className="w-20 h-20 rounded-lg object-cover"
+                    />
+                    <div className="flex-1">
+                      <CardTitle className="text-lg font-semibold">
+                        {nft["NFT name"]}
+                      </CardTitle>
+                      <p className="text-gray-500 mt-1">{nft.Price}</p>
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <Button className="btn btn-primary text-sm">Sell</Button>
+                      <Button className="btn btn-secondary text-sm">Transfer</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {filteredNFTs.length === 0 && (
+                <p className="text-center w-full text-gray-500">
+                  No NFTs found.
+                </p>
               )}
             </div>
           </div>
